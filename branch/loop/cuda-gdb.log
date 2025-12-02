@@ -1,0 +1,170 @@
+                                                        [System Information]
+ROS: humble
+DOMAIN_ID: 99
+IP_Address_1: 100.69.39.187
+IP_Address_2: 172.17.0.1
+jetson@yahboom:~$ cd workspace/experiment/branch/loop/
+jetson@yahboom:~/workspace/experiment/branch/loop$ cuda-gdb testloop87.out 
+NVIDIA (R) cuda-gdb 12.6
+Portions Copyright (C) 2007-2024 NVIDIA Corporation
+Based on GNU gdb 13.2
+Copyright (C) 2023 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This CUDA-GDB was configured as "aarch64-elf-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<https://forums.developer.nvidia.com/c/developer-tools/cuda-developer-tools/cuda-gdb>.
+Find the CUDA-GDB manual and other documentation resources online at:
+    <https://docs.nvidia.com/cuda/cuda-gdb/index.html>.
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from testloop87.out...
+(cuda-gdb) set cuda break_on_launch application 
+(cuda-gdb) run 
+Starting program: /home/jetson/workspace/experiment/branch/loop/testloop87.out 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/aarch64-linux-gnu/libthread_db.so.1".
+[New Thread 0xfffff47dc840 (LWP 11171)]
+[Detaching after fork from child process 11172]
+[New Thread 0xfffff3edb840 (LWP 11178)]
+blocks  per grid  = 1
+threads per block = 32
+[Switching focus to CUDA kernel 1, grid 2, block (0,0,0), thread (0,0,0), device 0, sm 0, warp 1, lane 0]
+
+CUDA thread hit application kernel entry function breakpoint, test_bra<<<(1,1,1),(32,1,1)>>> (out=0x2050e0000, count=32)
+    at ./testloop.cu:20
+20	    int i = threadIdx.x;
+(cuda-gdb) s
+21	    while (i > 0) {
+(cuda-gdb) s
+25	}
+(cuda-gdb) info cuda warps 
+  Wp Active Lanes Mask Divergent Lanes Mask          Active PC Kernel BlockIdx First Active ThreadIdx 
+Device 0 SM 0
+*  1        0x00000001           0xfffffffe 0x00000002021569b0      1  (0,0,0)                (0,0,0) 
+(cuda-gdb) info cuda lanes 
+  Ln   State           PC         ThreadIdx Exception 
+Device 0 SM 0 Warp 1
+*  0   active  0x00000002021569b0   (0,0,0)    None   
+   1 divergent 0x0000000202156730   (1,0,0)    None   
+   2 divergent 0x0000000202156730   (2,0,0)    None   
+   3 divergent 0x0000000202156730   (3,0,0)    None   
+   4 divergent 0x0000000202156730   (4,0,0)    None   
+   5 divergent 0x0000000202156730   (5,0,0)    None   
+   6 divergent 0x0000000202156730   (6,0,0)    None   
+   7 divergent 0x0000000202156730   (7,0,0)    None   
+   8 divergent 0x0000000202156730   (8,0,0)    None   
+   9 divergent 0x0000000202156730   (9,0,0)    None   
+  10 divergent 0x0000000202156730  (10,0,0)    None   
+  11 divergent 0x0000000202156730  (11,0,0)    None   
+  12 divergent 0x0000000202156730  (12,0,0)    None   
+  13 divergent 0x0000000202156730  (13,0,0)    None   
+  14 divergent 0x0000000202156730  (14,0,0)    None   
+  15 divergent 0x0000000202156730  (15,0,0)    None   
+  16 divergent 0x0000000202156730  (16,0,0)    None   
+  17 divergent 0x0000000202156730  (17,0,0)    None   
+  18 divergent 0x0000000202156730  (18,0,0)    None   
+  19 divergent 0x0000000202156730  (19,0,0)    None   
+  20 divergent 0x0000000202156730  (20,0,0)    None   
+  21 divergent 0x0000000202156730  (21,0,0)    None   
+  22 divergent 0x0000000202156730  (22,0,0)    None   
+  23 divergent 0x0000000202156730  (23,0,0)    None   
+  24 divergent 0x0000000202156730  (24,0,0)    None   
+  25 divergent 0x0000000202156730  (25,0,0)    None   
+  26 divergent 0x0000000202156730  (26,0,0)    None   
+  27 divergent 0x0000000202156730  (27,0,0)    None   
+  28 divergent 0x0000000202156730  (28,0,0)    None   
+  29 divergent 0x0000000202156730  (29,0,0)    None   
+  30 divergent 0x0000000202156730  (30,0,0)    None   
+  31 divergent 0x0000000202156730  (31,0,0)    None   
+(cuda-gdb) si 
+0x00000002021569c0	25	}
+(cuda-gdb) info cuda lanes 
+  Ln   State           PC         ThreadIdx Exception 
+Device 0 SM 0 Warp 1
+*  0   active  0x00000002021569c0   (0,0,0)    None   
+   1 divergent 0x0000000202156730   (1,0,0)    None   
+   2 divergent 0x0000000202156730   (2,0,0)    None   
+   3 divergent 0x0000000202156730   (3,0,0)    None   
+   4 divergent 0x0000000202156730   (4,0,0)    None   
+   5 divergent 0x0000000202156730   (5,0,0)    None   
+   6 divergent 0x0000000202156730   (6,0,0)    None   
+   7 divergent 0x0000000202156730   (7,0,0)    None   
+   8 divergent 0x0000000202156730   (8,0,0)    None   
+   9 divergent 0x0000000202156730   (9,0,0)    None   
+  10 divergent 0x0000000202156730  (10,0,0)    None   
+  11 divergent 0x0000000202156730  (11,0,0)    None   
+  12 divergent 0x0000000202156730  (12,0,0)    None   
+  13 divergent 0x0000000202156730  (13,0,0)    None   
+  14 divergent 0x0000000202156730  (14,0,0)    None   
+  15 divergent 0x0000000202156730  (15,0,0)    None   
+  16 divergent 0x0000000202156730  (16,0,0)    None   
+  17 divergent 0x0000000202156730  (17,0,0)    None   
+  18 divergent 0x0000000202156730  (18,0,0)    None   
+  19 divergent 0x0000000202156730  (19,0,0)    None   
+  20 divergent 0x0000000202156730  (20,0,0)    None   
+  21 divergent 0x0000000202156730  (21,0,0)    None   
+  22 divergent 0x0000000202156730  (22,0,0)    None   
+  23 divergent 0x0000000202156730  (23,0,0)    None   
+  24 divergent 0x0000000202156730  (24,0,0)    None   
+  25 divergent 0x0000000202156730  (25,0,0)    None   
+  26 divergent 0x0000000202156730  (26,0,0)    None   
+  27 divergent 0x0000000202156730  (27,0,0)    None   
+  28 divergent 0x0000000202156730  (28,0,0)    None   
+  29 divergent 0x0000000202156730  (29,0,0)    None   
+  30 divergent 0x0000000202156730  (30,0,0)    None   
+  31 divergent 0x0000000202156730  (31,0,0)    None   
+(cuda-gdb) cuda lane 1
+[Switching focus to CUDA kernel 1, grid 2, block (0,0,0), thread (1,0,0), device 0, sm 0, warp 1, lane 1]
+0x0000000202156730	21	    while (i > 0) {
+(cuda-gdb) si               
+[Current focus set to CUDA kernel 1, grid 2, block (0,0,0), thread (1,0,0), device 0, sm 0, warp 1, lane 1]
+warning: Current CUDA focus is no longer active. Stepping divergent CUDA threads until current CUDA focus is active again.
+22	        mem[threadIdx.x * XBS + i] += i;
+(cuda-gdb) info cuda lanes 
+  Ln  State         PC         ThreadIdx Exception 
+Device 0 SM 0 Warp 1
+*  1 active 0x0000000202156740   (1,0,0)    None   
+   2 active 0x0000000202156740   (2,0,0)    None   
+   3 active 0x0000000202156740   (3,0,0)    None   
+   4 active 0x0000000202156740   (4,0,0)    None   
+   5 active 0x0000000202156740   (5,0,0)    None   
+   6 active 0x0000000202156740   (6,0,0)    None   
+   7 active 0x0000000202156740   (7,0,0)    None   
+   8 active 0x0000000202156740   (8,0,0)    None   
+   9 active 0x0000000202156740   (9,0,0)    None   
+  10 active 0x0000000202156740  (10,0,0)    None   
+  11 active 0x0000000202156740  (11,0,0)    None   
+  12 active 0x0000000202156740  (12,0,0)    None   
+  13 active 0x0000000202156740  (13,0,0)    None   
+  14 active 0x0000000202156740  (14,0,0)    None   
+  15 active 0x0000000202156740  (15,0,0)    None   
+  16 active 0x0000000202156740  (16,0,0)    None   
+  17 active 0x0000000202156740  (17,0,0)    None   
+  18 active 0x0000000202156740  (18,0,0)    None   
+  19 active 0x0000000202156740  (19,0,0)    None   
+  20 active 0x0000000202156740  (20,0,0)    None   
+  21 active 0x0000000202156740  (21,0,0)    None   
+  22 active 0x0000000202156740  (22,0,0)    None   
+  23 active 0x0000000202156740  (23,0,0)    None   
+  24 active 0x0000000202156740  (24,0,0)    None   
+  25 active 0x0000000202156740  (25,0,0)    None   
+  26 active 0x0000000202156740  (26,0,0)    None   
+  27 active 0x0000000202156740  (27,0,0)    None   
+  28 active 0x0000000202156740  (28,0,0)    None   
+  29 active 0x0000000202156740  (29,0,0)    None   
+  30 active 0x0000000202156740  (30,0,0)    None   
+  31 active 0x0000000202156740  (31,0,0)    None   
+(cuda-gdb) quit
+A debugging session is active.
+
+	Inferior 1 [process 11168] will be killed.
+
+Quit anyway? (y or n) y
+jetson@yahboom:~/workspace/experiment/branch/loop$ 
+
+
