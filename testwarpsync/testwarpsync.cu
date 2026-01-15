@@ -7,14 +7,8 @@
 
 __global__
 void test_atomic(int64_t *out, uint32_t count) {    
-    // *out = 0;
-    // while (!atomicCAS((unsigned int*)out, 0, 1));
-    // out[1 + threadIdx.x] = count;
-    // atomicExch((unsigned long long *)out, 0);
     if (threadIdx.x < 16) {
-        out[threadIdx.x + 33] = threadIdx.y;
-        out[threadIdx.x + 34] = threadIdx.z;
-        out[threadIdx.x + 35] = threadIdx.x;
+        // out[threadIdx.x] = count;
         __shfl_sync(0xFFFFFFFF, 1, 2);
     } else {
         __shfl_sync(0xFFFFFFFF, 1, 2);
