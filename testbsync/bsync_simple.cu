@@ -4,7 +4,7 @@
 #include <cuda_runtime.h>
 #include <cuda.h>
 
-#define XBS 32
+#define XBS 64
 
 #define NN 32
 
@@ -12,17 +12,31 @@
 // printf("thread.x=%d, activemask=0x%08x\n", threadIdx.x, __activemask());
 // printf("threadidx.x = %d\n", threadIdx.x);
 
-__device__ int mem[2048] = {0};
+__device__ int mem[1024] = {0};
+
+__device__ __noinline__ void test_branch_another(int64_t *out, uint32_t count) {
+    if (threadIdx.x < NN) {
+        out[threadIdx.x] = threadIdx.x;
+    } else {
+        mem[threadIdx.x - NN] = out[threadIdx.x - NN];
+    }
+    return;
+}
 
 __global__
 void test_bra(int64_t *out, uint32_t count){
-    // __shared__ uint32_t data[XBS];
-    int i = threadIdx.x;
-    while (i > 0) {
-        mem[threadIdx.x * XBS + i] += i;
-        i--;
+    __shared__ uint32_t data[XBS];
+    // if (threadIdx.x < 16) {
+    //     mem[threadIdx.x] = threadIdx.y;
+    //     mem[threadIdx.x + 16] = threadIdx.z;
+    //     mem[threadIdx.x + 32] = threadIdx.x;
+    // }
+    if (threadIdx.x < NN) {
+        data[threadIdx.x] = threadIdx.x;
+    } else {
+        out[threadIdx.x - NN] = data[threadIdx.x - NN];
     }
-    mem[threadIdx.y] = 1;
+    test_branch_another(out, count);
 }
 
 int main(int argc, char **argv) {
