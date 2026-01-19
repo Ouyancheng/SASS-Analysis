@@ -14,9 +14,21 @@ if [ ${source_file_extension} = cu ]; then
 ver=$2
 nodebug_option=$3
 debug_flags="-g -G"
+ptxas_flags="-Xptxas -O0"
 if [ "${nodebug_option}" != "" ]; then 
-debug_flags=""
-echo "no debug, option=${nodebug_option} 3=$3"
+    if [ "${nodebug_option}" == "NDEBUG" ]; then 
+        debug_flags=""
+    elif [ "${nodebug_option}" == "Og" ]; then 
+        ptxas_flags=""
+    elif [ "${nodebug_option}" == "O2" ]; then 
+        debug_flags=""
+        ptxas_flags=""
+    else 
+        echo "Debug/Optimization options are: NDEBUG Og O2, defaulting to O2"
+        debug_flags=""
+        ptxas_flags=""
+    fi
+    echo "no debug, option=${nodebug_option} 3=$3"
 fi 
 # for ver in 90 86 52 
 # do
@@ -25,9 +37,9 @@ out_file=${source_file_no_extension}${ver}.out
 list_file=${source_file_no_extension}${ver}.list
 ptx_file=${source_file_no_extension}${ver}.ptx
 
-nvcc $source_file -I./include ${debug_flags} -o ${cubin_file} -cubin -gencode arch=compute_${ver},code=sm_${ver} -Xptxas -O0 
-nvcc $source_file -I./include ${debug_flags} -o ${out_file} -gencode arch=compute_${ver},code=sm_${ver} -Xptxas -O0 
-nvcc $source_file -I./include ${debug_flags} -o ${ptx_file} -ptx -gencode arch=compute_${ver},code=sm_${ver} -Xptxas -O0
+nvcc $source_file -I./include ${debug_flags} -o ${cubin_file} -cubin -gencode arch=compute_${ver},code=sm_${ver} ${ptxas_flags} 
+nvcc $source_file -I./include ${debug_flags} -o ${out_file} -gencode arch=compute_${ver},code=sm_${ver} ${ptxas_flags} 
+nvcc $source_file -I./include ${debug_flags} -o ${ptx_file} -ptx -gencode arch=compute_${ver},code=sm_${ver} ${ptxas_flags}
 cuobjdump --dump-sass ${cubin_file} > ${list_file}
 
 # done
